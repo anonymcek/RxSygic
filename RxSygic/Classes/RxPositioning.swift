@@ -1,9 +1,10 @@
 import RxSwift
+import SygicNavi
 
-class RxPositioning: NSObject, SYPositioningDelegate {
-    static let shared = RxPositioning()
+public class RxPositioning: NSObject, SYPositioningDelegate {
+    static public let shared = RxPositioning()
     
-    var position = Variable<SYPosition>(SYPosition())
+    public var position = Variable<SYPosition>(SYPosition())
     
     private override init() {
         super.init()
@@ -12,7 +13,7 @@ class RxPositioning: NSObject, SYPositioningDelegate {
         SYPositioning.shared().startUpdatingPosition()
     }
     
-    func positioning(_ positioning: SYPositioning, didUpdate position: SYPosition) {
+    public func positioning(_ positioning: SYPositioning, didUpdate position: SYPosition) {
         self.position.value = position
     }
 }
