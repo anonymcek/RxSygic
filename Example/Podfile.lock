@@ -1,0 +1,16 @@
+PODS:
+  - RxSygic (0.1.0)
+
+DEPENDENCIES:
+  - RxSygic (from `../`)
+
+EXTERNAL SOURCES:
+  RxSygic:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  RxSygic: 2253fad7dd3970f87bae146861e71b62c321d174
+
+PODFILE CHECKSUM: d5c314c632b45d63f3d62d8f34173fced38fca18
+
+COCOAPODS: 1.2.0
