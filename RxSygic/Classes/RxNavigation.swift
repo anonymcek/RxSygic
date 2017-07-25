@@ -7,7 +7,7 @@ public class RxNavigation: NSObject {
     
     public var speedLimit = Variable<SYSpeedLimit>(SYSpeedLimit())
     public var directionInfo = Variable<SYInstruction>(SYInstruction())
-    fileprivate var signpostInfo = Variable<[SYSignpost]>([SYSignpost]())
+    public var signpostInfo = Variable<[SYSignpost]>([SYSignpost]())
     public var positionInfo = Variable<SYPositionInfo>(SYPositionInfo())
     public var signpostDirectionInfo: Observable<(signpostInfo: [SYSignpost], directionInfo: SYInstruction)>
     
