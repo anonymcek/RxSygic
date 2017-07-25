@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'RxSygic'
-  s.version          = '0.2.2'
+  s.version          = '0.2.3'
   s.summary          = 'RxSygic layer for SygicSDK'
 
 # This description is used to generate tags and improve search results.
@@ -37,7 +37,7 @@ TODO: Add long description of the pod here.
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.dependency 'Sygic', '1.1.10'
-  s.dependency 'RxSwift', '~>3.6'
-  s.dependency 'RxCocoa', '~>3.6'
+  s.dependency 'RxSwift', '~>3.6.1'
+  s.dependency 'RxCocoa', '~>3.6.1'
   
 end
