@@ -4,7 +4,7 @@ import SygicNavi
 public class RxPositioning: NSObject, SYPositioningDelegate {
     static public let shared = RxPositioning()
     
-    public var position = Variable<SYPosition>(SYPosition())
+    public var position = Variable<SYPosition>(SYPositioning.shared().lastKnownLocation ?? SYPosition())
     
     private override init() {
         super.init()

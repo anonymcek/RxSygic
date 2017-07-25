@@ -7,8 +7,9 @@ public class RxNavigation: NSObject {
     
     public var speedLimit = Variable<SYSpeedLimit>(SYSpeedLimit())
     public var directionInfo = Variable<SYInstruction>(SYInstruction())
-    public var signpostInfo = Variable<[SYSignpost]>([SYSignpost]())
+    fileprivate var signpostInfo = Variable<[SYSignpost]>([SYSignpost]())
     public var positionInfo = Variable<SYPositionInfo>(SYPositionInfo())
+    public var signpostDirectionInfo: Observable<(signpostInfo: [SYSignpost], directionInfo: SYInstruction)>
     
     public var currentRadar = Variable<SYRadar>(SYRadar())
     public var currentRailwayCrossing = Variable<SYRailwayCrossing>(SYRailwayCrossing())
@@ -19,6 +20,11 @@ public class RxNavigation: NSObject {
     
     
     private override init() {
+        signpostDirectionInfo = Observable.combineLatest(signpostInfo.asObservable(), directionInfo.asObservable()) {
+            singpostInfo, directionInfo in
+            return (signpostInfo: singpostInfo, directionInfo: directionInfo)
+        }
+        
         super.init()
         SYNavigation.shared().delegate = self
     }
@@ -27,28 +33,23 @@ public class RxNavigation: NSObject {
 extension RxNavigation: SYNavigationDelegate {
     
     public func navigation(_ navigation: SYNavigation, didUpdate positionInfo: SYPositionInfo?) {
-        guard let positionInfo = positionInfo else { return }
-        self.positionInfo.value = positionInfo
+        self.positionInfo.value = positionInfo ?? SYPositionInfo()
     }
     
     public func navigation(_ navigation: SYNavigation, didUpdate limit: SYSpeedLimit?) {
-        guard let limit = limit else { return }
-        self.speedLimit.value = limit
+        speedLimit.value = limit ?? SYSpeedLimit()
     }
     
     public func navigation(_ navigation: SYNavigation, didUpdateDirection directionInfo: SYInstruction?) {
-        guard let directionInfo = directionInfo else { return }
-        self.directionInfo.value = directionInfo
+        self.directionInfo.value = directionInfo ?? SYInstruction()
     }
     
     public func navigation(_ navigation: SYNavigation, didUpdateSignpost signpostInfo: [SYSignpost]?) {
-        guard let signpostInfo = signpostInfo else { return }
-        self.signpostInfo.value = signpostInfo
+        self.signpostInfo.value = signpostInfo ?? [SYSignpost]()
     }
     
     public func navigation(_ navigation: SYNavigation, didUpdate radarInfo: SYRadar?) {
-        guard let radarInfo = radarInfo else { return }
-        self.currentRadar.value = radarInfo
+        currentRadar.value = radarInfo ?? SYRadar()
     }
     
     public func navigation(_ navigation: SYNavigation, didUpdate radars: [SYRadar]?, on route: SYRoute?) {
@@ -60,13 +61,11 @@ extension RxNavigation: SYNavigationDelegate {
     }
     
     public func navigation(_ navigation: SYNavigation, didUpdate railwayInfo: SYRailwayCrossing?) {
-        guard let railwayInfo = railwayInfo else { return }
-        self.currentRailwayCrossing.value = railwayInfo
+        currentRailwayCrossing.value = railwayInfo ?? SYRailwayCrossing()
     }
     
     public func navigation(_ navigation: SYNavigation, didUpdate sharpCurve: SYSharpCurve?) {
-        guard let sharpCurve = sharpCurve else { return }
-        self.sharpCurve.value = sharpCurve
+        self.sharpCurve.value = sharpCurve ?? SYSharpCurve()
     }
     
     public func navigation(_ navigation: SYNavigation, didPassWaypointWith index: UInt) {
@@ -85,17 +84,16 @@ extension RxNavigation: SYNavigationDelegate {
         
     }
     
-    public func navigation(_ navigation: SYNavigation, didUpdate route: SYRoute?) {
-        
-    }
+//    public func navigation(_ navigation: SYNavigation, didUpdate route: SYRoute?) {
+//        
+//    }
     
     public func navigation(_ navigation: SYNavigation, didUpdate mode: SYTransportMode) {
         
     }
     
     public func navigation(_ navigation: SYNavigation, didUpdate info: SYOnRouteInfo?) {
-        guard let onRouteInfo = info else { return }
-        self.onRouteInfo.value = onRouteInfo
+        onRouteInfo.value = info ?? SYOnRouteInfo()
     }
     
     public func navigation(_ navigation: SYNavigation, didUpdate lanesInfo: SYLanesInformation?) {
