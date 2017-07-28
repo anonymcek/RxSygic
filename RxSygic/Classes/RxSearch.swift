@@ -60,7 +60,7 @@ public class RxSearch {
             if let position = SYPositioning.shared().lastKnownLocation?.coordinate {
                 searchPosition = position
             }
-            let placeRequest = SYPlaceRequest(location: searchPosition, searchRadius: 20000, filter: poiGroup)
+            let placeRequest = SYPlaceRequest(location: searchPosition, searchRadius: 20000, poiGroupfilter: poiGroup)
             SYPlaces.shared().start(placeRequest, withCompletion: { (places) in
                 observer.onNext(places)
                 observer.onCompleted()
