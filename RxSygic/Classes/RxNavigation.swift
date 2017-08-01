@@ -2,6 +2,13 @@ import UIKit
 import RxSwift
 import SygicNavi
 
+public struct NotificationCenterInfo {
+    var radars: [SYRadar]
+    var railwayCrossing: SYRailwayCrossing
+    var sharpCurve: SYSharpCurve
+    var alternativeRoute: SYAlternativeRoute
+}
+
 public class RxNavigation: NSObject {
     static public let shared = RxNavigation()
     
@@ -14,15 +21,25 @@ public class RxNavigation: NSObject {
     public var currentRadar = Variable<SYRadar>(SYRadar())
     public var currentRailwayCrossing = Variable<SYRailwayCrossing>(SYRailwayCrossing())
     public var sharpCurve = Variable<SYSharpCurve>(SYSharpCurve())
+    public var radars = Variable<[SYRadar]>([SYRadar]())
+    public var alternativeRoute = Variable<SYAlternativeRoute>(SYAlternativeRoute())
+    public var notificationCenterInfo: Observable<(NotificationCenterInfo)>
     
     public var waypointPassedIndex = Variable<UInt>(0)
     public var onRouteInfo = Variable<SYOnRouteInfo>(SYOnRouteInfo())
     
     
     private override init() {
-        signpostDirectionInfo = Observable.combineLatest(signpostInfo.asObservable(), directionInfo.asObservable()) {
-            singpostInfo, directionInfo in
-            return (signpostInfo: singpostInfo, directionInfo: directionInfo)
+        signpostDirectionInfo = Observable
+            .combineLatest(signpostInfo.asObservable(), directionInfo.asObservable()) {
+                singpostInfo, directionInfo in
+                return (signpostInfo: singpostInfo, directionInfo: directionInfo)
+        }
+        
+        notificationCenterInfo = Observable
+            .combineLatest(currentRailwayCrossing.asObservable(), sharpCurve.asObservable(), radars.asObservable(), alternativeRoute.asObservable()) {
+                currentRailwayCrossing, sharpCurve, radars, alternativeRoute in
+                return NotificationCenterInfo(radars: radars, railwayCrossing: currentRailwayCrossing, sharpCurve: sharpCurve, alternativeRoute: alternativeRoute)
         }
         
         super.init()
@@ -53,7 +70,7 @@ extension RxNavigation: SYNavigationDelegate {
     }
     
     public func navigation(_ navigation: SYNavigation, didUpdate radars: [SYRadar]?, on route: SYRoute?) {
-        
+        radars.value = radars ?? [SYRadar]()
     }
     
     public func navigation(_ navigation: SYNavigation, didUpdatePoisOnRoute pois: [SYPoiOnRoute]?) {
@@ -77,7 +94,7 @@ extension RxNavigation: SYNavigationDelegate {
     }
     
     public func navigation(_ navigation: SYNavigation, didFindBetterRoute alterRoute: SYAlternativeRoute?) {
-        
+        alternativeRoute.value = alterRoute ?? SYAlternativeRoute()
     }
     
     public func navigation(_ navigation: SYNavigation, didUpdateHighwayExit highwayExit: [SYHighwayExit]?) {
