@@ -70,7 +70,7 @@ extension RxNavigation: SYNavigationDelegate {
     }
     
     public func navigation(_ navigation: SYNavigation, didUpdate radars: [SYRadar]?, on route: SYRoute?) {
-        radars.value = radars ?? [SYRadar]()
+        self.radars.value = radars ?? [SYRadar]()
     }
     
     public func navigation(_ navigation: SYNavigation, didUpdatePoisOnRoute pois: [SYPoiOnRoute]?) {
