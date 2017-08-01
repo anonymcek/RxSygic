@@ -94,7 +94,7 @@ extension RxNavigation: SYNavigationDelegate {
     }
     
     public func navigation(_ navigation: SYNavigation, didFindBetterRoute alterRoute: SYAlternativeRoute?) {
-        
+        alternativeRoute.value = alterRoute ?? SYAlternativeRoute()
     }
     
     public func navigation(_ navigation: SYNavigation, didUpdateHighwayExit highwayExit: [SYHighwayExit]?) {
