@@ -3,10 +3,10 @@ import RxSwift
 import SygicNavi
 
 public struct NotificationCenterInfo {
-    var radars: [SYRadar]
-    var railwayCrossing: SYRailwayCrossing
-    var sharpCurve: SYSharpCurve
-    var alternativeRoute: SYAlternativeRoute
+    public var radars: [SYRadar]
+    public var railwayCrossing: SYRailwayCrossing
+    public var sharpCurve: SYSharpCurve
+    public var alternativeRoute: SYAlternativeRoute
 }
 
 public class RxNavigation: NSObject {
